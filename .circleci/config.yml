@@ -1,0 +1,21 @@
+workflows:
+  version: 2
+  ci-build:
+    jobs:
+      - ci-test-reports
+
+jobs:
+  ci-test-reports:
+    docker:
+      - image: python:2.7.15-stretch
+    parallelism: 2
+    working_directory: ~/regression
+    steps:
+      - run:
+          name: Install dependencies
+          command: apt-get update && apt-get install -y rsync
+      - checkout
+      - run:
+          name: Build all
+          command: exec ./ci_build_results_all.sh
+
